@@ -65,8 +65,8 @@ h5, h6, .h5, .h6, .fw-normal {
 
 .svg-frame {
 	position: relative;
-	width: 300px;
-	height: 300px;
+	width: 280px;
+	height: 280px;
 	transform-style: preserve-3d;
 	display: flex;
 	justify-content: center;
@@ -286,6 +286,7 @@ h5, h6, .h5, .h6, .fw-normal {
 
 	.header-carousel .owl-carousel-item p {
 		font-size: 16px !important;
+		width: 90%;
 	}
 
 }
