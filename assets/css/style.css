@@ -62,9 +62,10 @@ h5, h6, .h5, .h6, .fw-normal {
 	transition: opacity 0.5s ease-out, visibility 0s linear 0.5s;
 	z-index: 99999;
 	background: linear-gradient(to right, var(--bs-secondary), var(--bs-primary));
-	background-size: 100% !important;
+	background-size: cover !important;
 	width: 100% !important;
-	height: 100% !important;
+	height: 100vh !important;
+	
 	/* min-height: 100vh; */
 }
 
