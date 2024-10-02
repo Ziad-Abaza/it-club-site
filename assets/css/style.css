@@ -64,7 +64,7 @@ h5, h6, .h5, .h6, .fw-normal {
 	background: linear-gradient(to right, var(--bs-secondary), var(--bs-primary));
 	background-size: cover !important;
 	width: 100% !important;
-	height: 100vh !important;
+	height: 100% !important;
 	min-height: 100vh;
 }
 
