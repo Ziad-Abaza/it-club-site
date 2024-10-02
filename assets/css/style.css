@@ -65,7 +65,7 @@ h5, h6, .h5, .h6, .fw-normal {
 	background-size: 100% !important;
 	width: 100% !important;
 	height: 100% !important;
-	min-height: 100vh;
+	/* min-height: 100vh; */
 }
 
 #spinner.show {
@@ -368,6 +368,13 @@ h5, h6, .h5, .h6, .fw-normal {
 	text-transform: uppercase;
 	font-size: 37px;
 }
+.section-title p{
+	color: var(--bs-primary);
+	font-weight: 600 !important;
+	letter-spacing: 5px;
+	text-transform: uppercase;
+	font-size: 18px;
+}
 
 /******************************************************************************* */
 /*                                      About                                    */
@@ -455,6 +462,10 @@ h5, h6, .h5, .h6, .fw-normal {
 	white-space: nowrap;
 	overflow: hidden;
 	transition: 0.5s;
+}
+
+.Committee-item:hover .btn:disabled {
+	width: 210px;
 }
 
 .Committee-item:hover .btn {
