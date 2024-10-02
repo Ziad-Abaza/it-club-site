@@ -64,8 +64,8 @@ h5, h6, .h5, .h6, .fw-normal {
 	background: linear-gradient(to right, var(--bs-secondary), var(--bs-primary));
 	background-size: cover !important;
 	width: max-content !important;
-	/* height: 100vh !important; */
-	min-height: 100vh !important;
+	height: 100vh !important;
+	min-height: 100vh;
 }
 
 #spinner.show {
