@@ -4,69 +4,104 @@
 (function ($) {
   "use strict";
 
-  // Spinner
+  /******************************************************************************* */
+  /*                                  Spinner                                      */
+  /******************************************************************************* */
   var spinner = function () {
     setTimeout(function () {
-      if ($("#spinner").length > 0) {
-        $("#spinner").removeClass("show");
+      var spinnerElement = $("#spinner");
+      if (spinnerElement.length > 0) {
+        spinnerElement.removeClass("show");
       }
     }, 1);
   };
   spinner();
 
-  // Initiate the wowjs
-  new WOW().init();
+  /******************************************************************************* */
+  /*                                  WOW.js Initialization                       */
+  /******************************************************************************* */
+  if (typeof WOW !== "undefined") {
+    new WOW().init();
+  } else {
+    console.warn("WOW.js library is not loaded.");
+  }
 
-  // Sticky Navbar
+  /******************************************************************************* */
+  /*                                  Sticky Navbar                               */
+  /******************************************************************************* */
   $(window).scroll(function () {
+    var stickyTop = $(".sticky-top");
     if ($(this).scrollTop() > 300) {
-      $(".sticky-top").addClass("shadow-sm").css("top", "0px");
+      stickyTop.addClass("shadow-sm").css("top", "0px");
     } else {
-      $(".sticky-top").removeClass("shadow-sm").css("top", "-100px");
+      stickyTop.removeClass("shadow-sm").css("top", "-100px");
     }
   });
 
-  // Back to top button
+  /******************************************************************************* */
+  /*                                  Back to Top Button                          */
+  /******************************************************************************* */
   $(window).scroll(function () {
+    var backToTop = $(".back-to-top");
     if ($(this).scrollTop() > 300) {
-      $(".back-to-top").fadeIn("slow");
+      backToTop.fadeIn("slow");
     } else {
-      $(".back-to-top").fadeOut("slow");
+      backToTop.fadeOut("slow");
     }
   });
+
   $(".back-to-top").click(function () {
     $("html, body").animate({ scrollTop: 0 }, 1500, "easeInOutExpo");
     return false;
   });
 
-  // Facts counter
-  $('[data-toggle="counter-up"]').counterUp({
-    delay: 10,
-    time: 2000,
-  });
+  /******************************************************************************* */
+  /*                                  Counter Up                                  */
+  /******************************************************************************* */
+  var counterElements = $('[data-toggle="counter-up"]');
+  if (counterElements.length > 0 && typeof $.fn.counterUp !== "undefined") {
+    counterElements.counterUp({
+      delay: 10,
+      time: 2000,
+    });
+  } else {
+    console.warn("CounterUp library is not loaded or no elements found.");
+  }
 
-  // Date and time picker
-  $(".date").datetimepicker({
-    format: "L",
-  });
-  $(".time").datetimepicker({
-    format: "LT",
-  });
+  /******************************************************************************* */
+  /*                                  Date & Time Picker                          */
+  /******************************************************************************* */
+  if ($.fn.datetimepicker) {
+    $(".date").datetimepicker({
+      format: "L",
+    });
+    $(".time").datetimepicker({
+      format: "LT",
+    });
+  } else {
+    console.warn("DateTimePicker library is not loaded.");
+  }
 
-  // Header carousel
-  $(".header-carousel").owlCarousel({
-    autoplay: true,
-    smartSpeed: 1500,
-    loop: true,
-    nav: false,
-    dots: true,
-    items: 1,
-    dotsData: true,
-  });
+  /******************************************************************************* */
+  /*                                  Header Carousel                             */
+  /******************************************************************************* */
+  if ($(".header-carousel").length > 0 && $.fn.owlCarousel) {
+    $(".header-carousel").owlCarousel({
+      autoplay: true,
+      smartSpeed: 1500,
+      loop: true,
+      nav: false,
+      dots: true,
+      items: 1,
+      dotsData: true,
+    });
+  } else {
+    console.warn("OwlCarousel library is not loaded or no elements found.");
+  }
 })(jQuery);
 
 /******************************************************************************* */
-/*                                  Template Details                              */
+/*                                  Template Details                             */
 /******************************************************************************* */
 document.addEventListener("DOMContentLoaded", () => {
   "use strict";
@@ -75,67 +110,70 @@ document.addEventListener("DOMContentLoaded", () => {
   /*                                  Portfolio Isotope and Filter                 */
   /******************************************************************************* */
   let projectsnIsotope = document.querySelector(".projects-isotope");
-
   if (projectsnIsotope) {
-    let projectsFilter = projectsnIsotope.getAttribute("data-projects-filter")
-      ? projectsnIsotope.getAttribute("data-projects-filter")
-      : "*";
-    let projectsLayout = projectsnIsotope.getAttribute("data-projects-layout")
-      ? projectsnIsotope.getAttribute("data-projects-layout")
-      : "masonry";
-    let projectsSort = projectsnIsotope.getAttribute("data-projects-sort")
-      ? projectsnIsotope.getAttribute("data-projects-sort")
-      : "original-order";
+    let projectsFilter =
+      projectsnIsotope.getAttribute("data-projects-filter") || "*";
+    let projectsLayout =
+      projectsnIsotope.getAttribute("data-projects-layout") || "masonry";
+    let projectsSort =
+      projectsnIsotope.getAttribute("data-projects-sort") || "original-order";
 
     window.addEventListener("load", () => {
-      let projectsIsotope = new Isotope(
-        document.querySelector(".projects-container"),
-        {
+      let projectsContainer = document.querySelector(".projects-container");
+      if (projectsContainer && typeof Isotope !== "undefined") {
+        let projectsIsotope = new Isotope(projectsContainer, {
           itemSelector: ".projects-item",
           layoutMode: projectsLayout,
           filter: projectsFilter,
           sortBy: projectsSort,
-        }
-      );
+        });
 
-      let menuFilters = document.querySelectorAll(
-        ".projects-isotope .projects-flters li"
-      );
-      menuFilters.forEach(function (el) {
-        el.addEventListener(
-          "click",
-          function () {
-            document
-              .querySelector(
-                ".projects-isotope .projects-flters .filter-active"
-              )
-              .classList.remove("filter-active");
-            this.classList.add("filter-active");
-            projectsIsotope.arrange({
-              filter: this.getAttribute("data-filter"),
-            });
-            if (typeof aos_init === "function") {
-              aos_init();
-            }
-          },
-          false
+        let menuFilters = document.querySelectorAll(
+          ".projects-isotope .projects-flters li"
         );
-      });
+        menuFilters.forEach(function (el) {
+          el.addEventListener(
+            "click",
+            function () {
+              let activeFilter = document.querySelector(
+                ".projects-isotope .projects-flters .filter-active"
+              );
+              if (activeFilter) activeFilter.classList.remove("filter-active");
+              this.classList.add("filter-active");
+              projectsIsotope.arrange({
+                filter: this.getAttribute("data-filter"),
+              });
+
+              // Re-initialize AOS after filtering
+              if (typeof aos_init === "function") {
+                aos_init();
+              }
+            },
+            false
+          );
+        });
+      } else {
+        console.warn("Isotope library is not loaded or no container found.");
+      }
     });
+  } else {
+    console.warn("No Isotope project container found.");
   }
 
   /******************************************************************************* */
   /*                                  AOS Initialization                           */
   /******************************************************************************* */
-  AOS.init();
-
   function aos_init() {
-    AOS.init({
-      duration: 1000,
-      easing: "ease-in-out",
-      once: true,
-      mirror: false,
-    });
+    if (typeof AOS !== "undefined") {
+      AOS.init({
+        duration: 1000,
+        easing: "ease-in-out",
+        once: true,
+        mirror: false,
+      });
+    } else {
+      console.warn("AOS library is not loaded.");
+    }
   }
 
   window.addEventListener("load", () => {
